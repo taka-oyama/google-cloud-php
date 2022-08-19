@@ -192,6 +192,11 @@ class BulkWriter
     private $greedilySend;
 
     /**
+     * @var int
+     */
+    private $maxDelayTime;
+
+    /**
      * @param ConnectionInterface $connection A connection to Cloud Firestore
      * @param ValueMapper $valueMapper A Value Mapper instance
      * @param string $database The current database
@@ -210,6 +215,7 @@ class BulkWriter
         $this->database = $database;
         $this->closed = false;
         $this->isLegacyWriteBatch = false;
+        $this->maxDelayTime = self::DEFAULT_BACKOFF_MAX_DELAY_MS;
         if (is_null($options) || !is_array($options)) {
             // convert to transaction id for legacy WriteBatch
             $this->transaction = $options;
@@ -750,13 +756,13 @@ class BulkWriter
     public function getBackoffDuration(int $lastStatus, $backoffDurationInMillis = 0)
     {
         if ($lastStatus === Code::RESOURCE_EXHAUSTED) {
-            $backoffDurationInMillis = self::DEFAULT_BACKOFF_MAX_DELAY_MS;
+            $backoffDurationInMillis = $this->maxDelayTime;
         } elseif ($backoffDurationInMillis <= 0) {
             $backoffDurationInMillis = self::DEFAULT_BACKOFF_INITIAL_DELAY_MS;
         } else {
             $backoffDurationInMillis *= self::DEFAULT_BACKOFF_FACTOR;
         }
-        return min(self::DEFAULT_BACKOFF_MAX_DELAY_MS, $backoffDurationInMillis);
+        return min($this->maxDelayTime, $backoffDurationInMillis);
     }
 
     /**
@@ -766,10 +772,10 @@ class BulkWriter
     public function sendBatch(array $writes, array $options = [])
     {
         $rateLimiterDelayMs = $this->rateLimiter->getNextRequestDelayMs(count($writes));
-        // avoid very long sleep
+        // avoid sleep in Tests
         $rateLimiterDelayMs = min(
             $rateLimiterDelayMs,
-            self::DEFAULT_BACKOFF_MAX_DELAY_MS
+            $this->maxDelayTime
         );
         if ($rateLimiterDelayMs > 0) {
             usleep($rateLimiterDelayMs * 1000);
@@ -874,6 +880,17 @@ class BulkWriter
     public function isEmpty()
     {
         return !(bool) $this->writes;
+    }
+
+    /**
+     * Change the maximum delay time for rescheduling a failed mutation or
+     * awaiting a batch creation.
+     *
+     * @internal
+     */
+    public function setMaxRetryTimeInMs(int $maxTime)
+    {
+        $this->maxDelayTime = min($this->maxDelayTime, max(0, $maxTime));
     }
 
     /**
@@ -1362,6 +1379,6 @@ class BulkWriter
         // Random value in [-0.3, 0.3]
         $resolution = 1000.0;
         $jitter = self::DEFAULT_JITTER_FACTOR * mt_rand(-$resolution, $resolution) / $resolution;
-        return (int) min(self::DEFAULT_BACKOFF_MAX_DELAY_MS, $backoffMs + $jitter * $backoffMs);
+        return (int) min($this->maxDelayTime, $backoffMs + $jitter * $backoffMs);
     }
 }
