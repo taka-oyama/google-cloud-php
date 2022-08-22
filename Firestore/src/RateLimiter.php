@@ -102,7 +102,7 @@ class RateLimiter
     public function tryMakeRequest(
         int $numOperations,
         int $requestTimeMillis = null
-    ): bool {
+    ) {
         if (is_null($requestTimeMillis)) {
             $requestTimeMillis = floor(microtime(true) * 1000);
         }
@@ -127,7 +127,7 @@ class RateLimiter
     public function getNextRequestDelayMs(
         int $numOperations,
         int $requestTimeMillis = null
-    ): int {
+    ) {
         if (is_null($requestTimeMillis)) {
             $requestTimeMillis = floor(microtime(true) * 1000);
         }
@@ -152,7 +152,7 @@ class RateLimiter
      * tokens. Used for testing the limiter.
      * @throws InvalidArgumentException If the request time is before the last token refill time.
      */
-    private function refillTokens(int $requestTimeMillis): void
+    private function refillTokens(int $requestTimeMillis)
     {
         if ($requestTimeMillis < $this->lastRefillTimeMillis) {
             throw new \InvalidArgumentException(
@@ -175,7 +175,7 @@ class RateLimiter
      * Calculates the maximum capacity based on the provided date.
      */
     // Visible for testing.
-    public function calculateCapacity(int $requestTimeMillis): int
+    public function calculateCapacity(int $requestTimeMillis)
     {
         if ($requestTimeMillis < $this->startTimeMillis) {
             // startTime cannot be before requestTime

@@ -204,7 +204,7 @@ class BulkWriterTest extends TestCase
                         ]),
                         array_fill(0, $batchSize - $successPerBatch, [
                             'code' => Code::DATA_LOSS,
-                        ]),
+                        ])
                     ),
                 ]
             );

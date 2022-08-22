@@ -265,7 +265,7 @@ class BulkWriter
                 PHP_INT_MAX,
                 PHP_INT_MAX,
                 PHP_INT_MAX,
-                PHP_INT_MAX,
+                PHP_INT_MAX
             );
         } else {
             $startingRate = self::DEFAULT_STARTING_MAXIMUM_OPS_PER_SECOND;
