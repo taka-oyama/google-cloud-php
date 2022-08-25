@@ -1,5 +1,57 @@
 # Changelog
 
+## 0.189.0
+
+<details><summary>google/cloud-apigee-registry 0.2.0</summary>
+
+
+
+### Features
+
+* [ApigeeRegistry] added support for `force` field for API and API version deletion ([#5460](https://github.com/googleapis/google-cloud-php/issues/5460)) ([95ee84a](https://github.com/googleapis/google-cloud-php/commit/95ee84ad8bfbf36c6c1d27d476d2edd07605b362))
+
+</details>
+
+<details><summary>google/cloud-datastream 0.2.0</summary>
+
+
+
+### Features
+
+* [Datastream] added support for BigQuery destination and PostgreSQL source types ([#5467](https://github.com/googleapis/google-cloud-php/issues/5467)) ([efc3f70](https://github.com/googleapis/google-cloud-php/commit/efc3f70ad5f659ec7785b394585742d73e828b84))
+
+</details>
+
+<details><summary>google/cloud-firestore 1.25.3</summary>
+
+
+
+### Miscellaneous Chores
+
+* [Firestore] update count up_to field type in aggregation queries ([#5468](https://github.com/googleapis/google-cloud-php/issues/5468)) ([8244b93](https://github.com/googleapis/google-cloud-php/commit/8244b9367b3b8af0d3a65e5bdd6371152d02535e))
+
+</details>
+
+<details><summary>google/cloud-security-center 1.10.0</summary>
+
+
+
+### Features
+
+* [SecurityCenter] serviceAccountKeyName, serviceAccountDelegationInfo, and principalSubject attributes added to the existing access attribute. ([#5457](https://github.com/googleapis/google-cloud-php/issues/5457)) ([b120ba3](https://github.com/googleapis/google-cloud-php/commit/b120ba3d121d0d51163886c68f59c3326f75680a))
+
+</details>
+
+<details><summary>google/cloud-spanner 1.51.3</summary>
+
+
+
+### Bug Fixes
+
+* improve docs/throw more relevant error in regards to memory utilization for session pool ([#5470](https://github.com/googleapis/google-cloud-php/issues/5470)) ([69162b2](https://github.com/googleapis/google-cloud-php/commit/69162b2c46130b89f9d5c9e27cf9f671e387087f))
+
+</details>
+
 ## 0.188.0
 
 <details><summary>google/cloud-api-gateway 0.2.6</summary>
