@@ -502,7 +502,8 @@ class Instance
             $name,
             isset($options['sessionPool']) ? $options['sessionPool'] : null,
             $this->returnInt64AsObject,
-            isset($options['database']) ? $options['database'] : []
+            isset($options['database']) ? $options['database'] : [],
+            isset($options['mapper']) ? $options['mapper'] : null
         );
     }
 

@@ -185,6 +185,8 @@ class Database
      * @param bool $returnInt64AsObject [optional If true, 64 bit integers will
      *        be returned as a {@see Google\Cloud\Core\Int64} object for 32 bit
      *        platform compatibility. **Defaults to** false.
+     * @param ValueMapperInterface|null $mapper A mapper which maps values
+     *        between PHP and Spanner.
      */
     public function __construct(
         ConnectionInterface $connection,
@@ -195,14 +197,15 @@ class Database
         $name,
         SessionPoolInterface $sessionPool = null,
         $returnInt64AsObject = false,
-        array $info = []
+        array $info = [],
+        $mapper = null
     ) {
         $this->connection = $connection;
         $this->instance = $instance;
         $this->projectId = $projectId;
         $this->name = $this->fullyQualifiedDatabaseName($name);
         $this->sessionPool = $sessionPool;
-        $this->operation = new Operation($connection, $returnInt64AsObject);
+        $this->operation = new Operation($connection, $returnInt64AsObject, $mapper);
         $this->info = $info;
 
         if ($this->sessionPool) {
